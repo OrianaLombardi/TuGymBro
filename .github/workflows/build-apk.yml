@@ -23,16 +23,13 @@ jobs:
       - name: Instalar el SDK de Android
         uses: android-actions/setup-android@v3
 
-      - name: Dar permisos de ejecución al gradlew
-        run: chmod +x ./gradlew || true
+      - name: Instalar Gradle 8.13 (la versión que necesita este proyecto)
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
 
       - name: Compilar APK de debug
-        run: |
-          if [ -f "./gradlew" ] && [ -x "./gradlew" ]; then
-            ./gradlew assembleDebug --no-daemon
-          else
-            gradle assembleDebug --no-daemon
-          fi
+        run: gradle assembleDebug --no-daemon
 
       - name: Subir el APK como resultado descargable
         uses: actions/upload-artifact@v4
